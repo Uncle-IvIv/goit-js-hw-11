@@ -1,12 +1,4 @@
-@import "./reset.css";
-@import "./base.css";
-@import "./container.css";
-@import "./header.css";
-@import "./footer.css";
-@import "./back-link.css";
-@import "./badges.css";
-@import "./vite-promo.css";
-@import "./animations.css";
+
 
 .form {
   display: flex;
@@ -83,7 +75,6 @@
   display: none !important;
 }
 
-/* Стилізація сітки галереї та карток */
 .gallery {
   display: flex;
   flex-wrap: wrap;
