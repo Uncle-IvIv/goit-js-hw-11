@@ -1,24 +1,53 @@
 import './css/styles.css';
-import { fetchImages } from './js/pixabay-api.js';
-import { renderGallery } from './js/render-functions.js';
+import iziToast from 'izitoast';
+import 'izitoast/dist/css/iziToast.min.css';
 
-const form = document.querySelector('.search-form');
-const gallery = document.querySelector('.gallery');
+import { getImagesByQuery } from './js/pixabay-api.js';
+import { createGallery, clearGallery, showLoader, hideLoader } from './js/render-functions.js';
 
-form.addEventListener('submit', async (event) => {
+const searchForm = document.querySelector('.form');
+
+searchForm.addEventListener('submit', handleSearch);
+
+async function handleSearch(event) {
   event.preventDefault();
-  const query = event.currentTarget.elements.searchQuery.value.trim();
   
-  if (!query) return;
+  const form = event.currentTarget;
+  const searchQuery = form.elements['search-text'].value.trim();
+
+  if (searchQuery === '') {
+    iziToast.warning({
+      title: 'Warning',
+      message: 'Please fill in the search field!',
+      position: 'topRight',
+    });
+    return;
+  }
+
+  clearGallery();
+  showLoader();
 
   try {
-    const data = await fetchImages(query);
+    const data = await getImagesByQuery(searchQuery);
+
     if (data.hits.length === 0) {
-      alert('Зображень не знайдено!');
+      iziToast.error({
+        message: 'Sorry, there are no images matching your search query. Please try again!',
+        position: 'topRight',
+        timeout: 5000,
+      });
       return;
     }
-    renderGallery(data.hits, gallery);
+
+    createGallery(data.hits);
   } catch (error) {
-    alert('Щось пішло не так при завантаженні даних.');
+    iziToast.error({
+      title: 'Error',
+      message: `Failed to load images: ${error.message}`,
+      position: 'topRight',
+    });
+  } finally {
+    hideLoader();
+    form.reset();
   }
-});
+}
