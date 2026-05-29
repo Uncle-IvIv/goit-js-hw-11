@@ -12,12 +12,10 @@ const galleryContainer = document.querySelector('.gallery');
 const loadMoreBtn = document.querySelector('#load-more');
 const loader = document.querySelector('.loader');
 
-// Глобальні змінні стану (state) для пагінації
 let searchQuery = '';
 let page = 1;
 const perPage = 15;
 
-// Ініціалізація SimpleLightbox
 let lightbox = new SimpleLightbox('.gallery a', {
   captionsData: 'alt',
   captionDelay: 250,
@@ -26,22 +24,19 @@ let lightbox = new SimpleLightbox('.gallery a', {
 form.addEventListener('submit', handleSearch);
 loadMoreBtn.addEventListener('click', handleLoadMore);
 
-// --- 1. ОБРОБКА ПЕРШОГО ПОШУКУ (САБМІТ ФОРМИ) ---
 async function handleSearch(event) {
   event.preventDefault();
 
-  // Отримуємо і зберігаємо запит у глобальну змінну
-  searchQuery = event.currentTarget.elements.searchQuery.value.trim();
+   searchQuery = event.currentTarget.elements.searchQuery.value.trim();
 
   if (searchQuery === '') {
     iziToast.warning({ title: 'Warning', message: 'Please enter a search query!' });
     return;
   }
 
-  // Повертаємо page до початкового значення для нової колекції
   page = 1;
-  galleryContainer.innerHTML = ''; // Очищаємо галерею
-  hideLoadMoreBtn(); // При повторному сабміті кнопка спочатку ховається
+  galleryContainer.innerHTML = ''; 
+  hideLoadMoreBtn(); 
   showLoader();
 
   try {
@@ -55,13 +50,11 @@ async function handleSearch(event) {
       return;
     }
 
-    // Рендеримо першу порцію карток
     const markup = createGalleryMarkup(data.hits);
     galleryContainer.innerHTML = markup;
     
     lightbox.refresh();
     
-    // Керуємо видимістю кнопки Load more
     checkPaginationStatus(data.totalHits);
 
   } catch (error) {
@@ -69,29 +62,25 @@ async function handleSearch(event) {
     console.error(error);
   } finally {
     hideLoader();
-    form.reset(); // Очищаємо інпут після сабміту
+    form.reset(); 
   }
 }
 
-// --- 2. ОБРОБКА КЛІКУ НА КНОПКУ "LOAD MORE" ---
 async function handleLoadMore() {
-  page += 1; // З кожним наступним запитом збільшуємо на 1
-  hideLoadMoreBtn(); // Ховаємо кнопку на час завантаження додаткової порції
+  page += 1; 
+  hideLoadMoreBtn(); 
   showLoader();
 
   try {
     const data = await fetchImages(searchQuery, page);
     
-    // ДОДАЄМО нову розмітку до вже існуючих елементів
-    const markup = createGalleryMarkup(data.hits);
+     const markup = createGalleryMarkup(data.hits);
     galleryContainer.insertAdjacentHTML('beforeend', markup);
     
     lightbox.refresh();
     
-    // Плавне прокручування сторінки
     smoothScroll();
 
-    // Перевіряємо, чи не дійшли до кінця колекції
     checkPaginationStatus(data.totalHits);
 
   } catch (error) {
@@ -102,12 +91,9 @@ async function handleLoadMore() {
   }
 }
 
-// --- 3. ДОПОМІЖНІ ФУНКЦІЇ ---
-
 function checkPaginationStatus(totalHits) {
   const maxPages = Math.ceil(totalHits / perPage);
 
-  // Якщо користувач дійшов до кінця або результатів менше ніж на 1 сторінку
   if (page >= maxPages) {
     hideLoadMoreBtn();
     iziToast.info({
@@ -116,19 +102,16 @@ function checkPaginationStatus(totalHits) {
       position: 'bottomCenter',
     });
   } else {
-    showLoadMoreBtn(); // Показуємо кнопку, якщо є наступна сторінка
+    showLoadMoreBtn(); 
   }
 }
 
 function smoothScroll() {
-  // Отримуємо першу картку з відрендерених
-  const firstCard = galleryContainer.firstElementChild;
+   const firstCard = galleryContainer.firstElementChild;
   if (!firstCard) return;
 
-  // Вираховуємо висоту однієї картки
   const { height: cardHeight } = firstCard.getBoundingClientRect();
 
-  // Прокручуємо сторінку на дві висоти картки галереї
   window.scrollBy({
     top: cardHeight * 2,
     behavior: 'smooth',
