@@ -1,7 +1,6 @@
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-// Пошук DOM-елементів тепер живе тут
 const galleryContainer = document.querySelector('.gallery');
 const loadMoreBtn = document.querySelector('#load-more');
 const loader = document.querySelector('.loader');
@@ -32,37 +31,41 @@ export function createGalleryMarkup(images) {
 }
 
 export function clearGallery() {
-  galleryContainer.innerHTML = '';
+  if (galleryContainer) {
+    galleryContainer.innerHTML = '';
+  }
 }
 
 export function renderGallery(images) {
-  const markup = createGalleryMarkup(images);
-  galleryContainer.innerHTML = markup;
-  lightbox.refresh(); 
+  if (!galleryContainer) return;
+  galleryContainer.innerHTML = createGalleryMarkup(images);
+  lightbox.refresh();
+}
 
 export function appendToGallery(images) {
-  const markup = createGalleryMarkup(images);
-  galleryContainer.insertAdjacentHTML('beforeend', markup);
-  lightbox.refresh(); 
+  if (!galleryContainer) return;
+  galleryContainer.insertAdjacentHTML('beforeend', createGalleryMarkup(images));
+  lightbox.refresh();
 }
 
 export function showLoader() {
-  loader.classList.remove('hidden');
+  if (loader) loader.classList.remove('hidden');
 }
 
 export function hideLoader() {
-  loader.classList.add('hidden');
+  if (loader) loader.classList.add('hidden');
 }
 
 export function showLoadMoreBtn() {
-  loadMoreBtn.classList.remove('hidden');
+  if (loadMoreBtn) loadMoreBtn.classList.remove('hidden');
 }
 
 export function hideLoadMoreBtn() {
-  loadMoreBtn.classList.add('hidden');
+  if (loadMoreBtn) loadMoreBtn.classList.add('hidden');
 }
 
 export function smoothScroll() {
+  if (!galleryContainer) return;
   const firstCard = galleryContainer.firstElementChild;
   if (!firstCard) return;
 

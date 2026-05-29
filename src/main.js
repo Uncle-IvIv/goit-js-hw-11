@@ -1,3 +1,4 @@
+import iziToast from 'izitoast';
 import 'izitoast/dist/css/iziToast.min.css';
 
 import { fetchImages } from './js/pixabay-api.js';
@@ -13,12 +14,16 @@ import {
 } from './js/render-functions.js';
 
 const form = document.querySelector('#search-form');
+const loadMoreBtn = document.querySelector('#load-more'); // Потрібно додати назад сюди, щоб повісити addEventListener
 
 let searchQuery = '';
 let page = 1;
 const perPage = 15;
 
 form.addEventListener('submit', handleSearch);
+if (loadMoreBtn) {
+  loadMoreBtn.addEventListener('click', handleLoadMore);
+}
 
 async function handleSearch(event) {
   event.preventDefault();
@@ -44,7 +49,7 @@ async function handleSearch(event) {
         title: 'Error',
         message: 'Sorry, there are no images matching your search query. Please try again!',
       });
-      form.reset(); 
+      form.reset();
       return;
     }
 
@@ -56,14 +61,6 @@ async function handleSearch(event) {
     console.error(error);
   } finally {
     hideLoader();
-      }
-}
-
-loadMoreBtnEventListener();
-function loadMoreBtnEventListener() {
-  const loadMoreBtn = document.querySelector('#load-more');
-  if (loadMoreBtn) {
-    loadMoreBtn.addEventListener('click', handleLoadMore);
   }
 }
 
