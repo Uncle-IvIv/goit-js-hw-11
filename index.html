@@ -5,24 +5,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>goit-js-hw-11</title>
-  <script type="module" crossorigin src="/goit-js-hw-11/assets/index-B1sb_F1M.js"></script>
-  <link rel="stylesheet" crossorigin href="/goit-js-hw-11/assets/index-Clhw4MlJ.css">
+  <script type="module" crossorigin src="/goit-js-hw-11/assets/index-BmngF9mJ.js"></script>
+  <link rel="stylesheet" crossorigin href="/goit-js-hw-11/assets/index-C2erymhE.css">
 </head>
 
 <body>
   <main>
-    <form class="form">
-      <label>
-        <input type="text" name="search-text" placeholder="Search images..." required />
-      </label>
-      <button type="submit">Search</button>
-    </form>
+<form class="search-form" id="search-form">
+  <input type="text" name="searchQuery" autocomplete="off" placeholder="Search images..." />
+  <button type="submit">Search</button>
+</form>
+
 
 <div class="loader-container is-hidden">
   <span class="loader"></span>
 </div>
 
     <ul class="gallery"></ul>
+    <button type="button" class="load-more-btn hidden" id="load-more">Load more</button>
+  
+    <div class="loader hidden"></div>
   </main>
 
 </body>
