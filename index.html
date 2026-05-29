@@ -4,30 +4,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pixabay Image Search</title>
-  <script type="module" crossorigin src="/assets/index-Dv2n6t5u.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/index-DTwGBluq.css">
+  <title>goit-js-hw-12</title>
+  <link rel="stylesheet" href="./src/css/styles.css" />
 </head>
 
 <body>
   <main>
-    <!-- Форма пошуку згідно з ТЗ -->
-    <form class="form">
-      <label>
-        <input type="text" name="search-text" placeholder="Search images..." required />
-      </label>
+  
+    <form class="form" id="search-form">
+      <input type="text" name="searchQuery" autocomplete="off" placeholder="Search images..." />
       <button type="submit">Search</button>
     </form>
 
-    <!-- Контейнер для гарного індикатора завантаження -->
     <div class="loader-container is-hidden">
       <span class="loader"></span>
     </div>
 
-    <!-- Елемент галереї для карток зображень -->
     <ul class="gallery"></ul>
+
+    <button type="button" class="load-more-btn hidden" id="load-more">Load more</button>
+
+    <div class="loader hidden"></div>
   </main>
-
+
+  <script type="module" src="./src/main.js"></script>
 </body>
 
 </html>
